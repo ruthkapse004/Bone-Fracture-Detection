@@ -1,0 +1,6 @@
+tensorflow==2.6.0
+OpenCV-python==4.6.0.66
+keras==2.6.0
+numpy==1.19.5
+tk==0.1.0
+pillow==9.0.1
