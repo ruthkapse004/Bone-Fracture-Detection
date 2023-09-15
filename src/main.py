@@ -9,8 +9,9 @@ import tensorflow.keras.backend as K
 import numpy as np
 from keras.models import load_model
 
+
 # Set up GUI
-root = tk.Tk()  # Makes main window
+root = tk.Tk()
 root.wm_title("Bone Fracure Detection")
 root.wm_state('zoomed')
 
@@ -63,7 +64,7 @@ def detect(img):
     y = " ".join(str(x) for x in y_class)
     y = int(y)
     res = lib[y]
-    print(res)
+    # print(res)
 
     draw6 = Canvas(root, width=20, height=20, bd=0,
                    highlightthickness=0, background='teal')
@@ -87,31 +88,29 @@ def segment(img):
     image = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
     # reshape the image to a 2D array of pixels and 3 color values (RGB)
     pixel_values = image.reshape((-1, 3))
-    # convert to float
     pixel_values = np.float32(pixel_values)
     print(pixel_values.shape)
     # define stopping criteria
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 200, 0.2)
-    # number of clusters (K)
+    # number of clusters
     k = 3
     _, labels, (centers) = cv2.kmeans(pixel_values, k, None,
                                       criteria, 15, cv2.KMEANS_RANDOM_CENTERS)
-    # convert back to 8 bit values
-    centers = np.uint8(centers)
-    # print(labels)
-    print(centers)
 
-    # flatten the labels array
+    centers = np.uint8(centers)
+    print(centers)
+    # print(labels)
+
     labels = labels.flatten()
     # convert all pixels to the color of the centroids
     segmented_image = centers[labels.flatten()]
     # reshape back to the original image dimension
     img1 = segmented_image.reshape(image.shape)
     img1 = cv2.cvtColor(img1, cv2.COLOR_RGB2GRAY)
-    print('img1 shape = '+str(img1.shape))
+    print(f'img1 shape = {str(img1.shape)}')
     img1 = Image.fromarray(img1)
     img1 = ImageTk.PhotoImage(img1)
-    # cv2.imwrite("seg.jpg", img)
+
     global e5
     e5 = Label(root, image=img1)
     e5.place(x=1280, y=160)
@@ -140,7 +139,7 @@ def edges(img):
     img1 = cv2.Canny(image=img, threshold1=100, threshold2=120)
     img1 = Image.fromarray(img1)
     img1 = ImageTk.PhotoImage(img1)
-    # cv2.imwrite("edge.jpg", img1)
+
     global e4
     e4 = Label(root, image=img1)
     e4.place(x=1050, y=160)
@@ -168,7 +167,7 @@ def noise(img):
     img = cv2.medianBlur(img, 5)
     img1 = Image.fromarray(img)
     img1 = ImageTk.PhotoImage(img1)
-    # cv2.imwrite("noise.jpg", img)
+
     global e3
     e3 = Label(root, image=img1)
     e3.place(x=820, y=160)
@@ -198,7 +197,7 @@ def gray(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img1 = Image.fromarray(img)
     img1 = ImageTk.PhotoImage(img1)
-    # cv2.imwrite("gray.jpg", img)
+
     global e2
     e2 = Label(root, image=img1)
     e2.place(x=590, y=160)
@@ -229,8 +228,8 @@ def file_upload():
     img = Image.open(filename)
     img = img.resize((190, 230))
     img = ImageTk.PhotoImage(img)
-    # cv2.imwrite("img.jpg", img)
-    print(type(img))
+    # print(type(img))
+
     global e1
     e1 = Label(root, image=img)
     e1.place(x=360, y=160)
