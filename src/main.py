@@ -53,7 +53,7 @@ def clear():
 
 
 def detect(img):
-    img1 = load_img(img, target_size=(224, 224, 3))
+    img1 = load_img(img, target_size=(224, 224, 1))
     img1 = img_to_array(img1)
     img1 = img1/255
     img1 = np.expand_dims(img1, [0])
@@ -127,7 +127,7 @@ def segment(img):
     draw6.create_line(12, 0, 12, 20, fill='dark red', arrow='last', width=7)
 
     btn6 = Button(root, text='DETECT  FRACTURE',
-                  command=lambda: detect(filename))
+                  command=lambda: detect(img))
     btn6.place(x=1240, y=70)
 
     title = Label(root, text='SEGMENTATION',
